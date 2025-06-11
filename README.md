@@ -5,37 +5,38 @@
 - Assignment Title: Neural Ordinary Differential Equations (Neural ODEs) Assignment
 
 ## Description
-This repository contains a solution for a Neural ODE assignment that compares a standard 1-hidden-layer neural network with a Neural ODE model for binary classification on the MNIST dataset (digits 0 and 1, downsampled to 8x8 pixels). The solution includes:
-- A `StandardNet` with one hidden layer (16 neurons, ReLU activation).
-- An `ODENet` using a Neural ODE block with `torchdiffeq` and the `dopri5` solver.
-- Training scripts, accuracy reporting, and visualization of loss and confusion matrices.
-- Performance comparison and discussion as per Part C requirements.
+This repository contains a solution for an assignment involving the prediction of activation times using the 2D Eikonal equation. The solution implements two neural network models:
+- **Model 1**: A data-driven model using mean squared error loss.
+- **Model 2**: A physics-informed model incorporating the Eikonal equation constraint.
+The code uses TensorFlow 1.x for neural network training, with visualizations of true and predicted activation maps and RMSE error comparison.
 
 ## Instructions to Run the Code
 1. **Prerequisites**:
    - Install Python 3.8+.
-   - Install required packages: `pip install torch torchvision scikit-learn matplotlib seaborn pydoe scipy torchdiffeq`.
+   - Install required packages: `pip install tensorflow==1.15.0 numpy scipy pyDOE matplotlib scikit-learn`.
+   - Note: TensorFlow 1.x is required; ensure compatibility with your system.
 2. **Run the Script**:
    - Navigate to the repository directory.
-   - Run the main script with default settings: `python main.py`.
-   - To specify a model, use: `python main.py --model standard` or `python main.py --model odenet`.
-   - Adjust epochs, batch size, or learning rate with `--epochs`, `--batch_size`, and `--lr` flags.
+   - Run the main script: `python main.py`.
+   - The script generates synthetic data, trains both models, and saves results to `model1_results.pkl` and `model2_results.pkl`.
 3. **Output**:
-   - Training loss, accuracy, and visualizations (`standard_results.png`, `odenet_results.png`) will be generated.
+   - Visualizations are saved as `activation_maps.png` and `rmse_error.png`.
+   - Training progress and RMSE values are printed to the console.
 4. **Dependencies**:
-   - Ensure a GPU is available (optional) by setting `--gpu 0`; otherwise, it defaults to CPU.
+   - The code runs on CPU by default (GPU disabled via `CUDA_VISIBLE_DEVICES = "-1"`). Enable GPU if needed by removing this line (requires TensorFlow GPU support).
 
 ## Known Issues and Assumptions
 - **Known Issues**:
-  - The script assumes the MNIST dataset can be downloaded. If download fails, ensure internet connectivity or pre-download the dataset.
-  - Visualization may require sufficient memory; adjust `batch_size` if memory errors occur.
+  - Training may be slow due to the use of TensorFlow 1.x and Adam optimization. Consider using `train` (L-BFGS-B) for faster convergence if needed.
+  - The script assumes sufficient memory for 100x100 grid data; reduce grid size if memory errors occur.
 - **Assumptions**:
-  - The binary MNIST subset (0 and 1) is sufficient for the task.
-  - The `dopri5` solver is adequate for the Neural ODE; other solvers (e.g., `rk4`) could be explored.
-  - High accuracy (near 99.9%) is expected due to the simplicity of the binary classification task.
+  - The Eikonal equation is simplified with a constant velocity \( V = 1 \).
+  - Sparse sampling (30 points) is sufficient for the task.
+  - The benchmark activation time function is appropriate for validation.
 
 ## Repository Structure
-- `main.py`: Main Python script with the implementation.
+- `eikonal_model.py`: Contains the `Eikonal2DnetCV2` class implementation.
+- `main.py`: Main script for data generation, training, and visualization.
 - `README.md`: This file.
 - (Optional) `results/`: Directory for generated plots (created during runtime).
 
