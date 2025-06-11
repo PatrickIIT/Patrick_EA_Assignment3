@@ -14,7 +14,7 @@ from sklearn.metrics import confusion_matrix
 # Argument parser for configuration
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, choices=['standard', 'odenet'], default='standard')
-parser.add_argument('--dataset', type=str, choices=['mnist'], default='mnist')  # Simplified to MNIST for your case
+parser.add_argument('--dataset', type=str, choices=['mnist'], default='mnist') 
 parser.add_argument('--epochs', type=int, default=10)
 parser.add_argument('--batch_size', type=int, default=64)
 parser.add_argument('--lr', type=float, default=0.01)
